@@ -127,6 +127,7 @@ ApplicationSettingsWidget::ApplicationSettingsWidget(QWidget* parent)
     m_generalUi->toolButtonStyleComboBox->installEventFilter(mouseWheelFilter);
     m_generalUi->languageComboBox->installEventFilter(mouseWheelFilter);
     m_generalUi->appThemeSelection->installEventFilter(mouseWheelFilter);
+    m_generalUi->appDensitySelection->installEventFilter(mouseWheelFilter);
 
 #ifdef WITH_XC_UPDATECHECK
     connect(m_generalUi->checkForUpdatesOnStartupCheckBox, SIGNAL(toggled(bool)), SLOT(checkUpdatesToggled(bool)));
@@ -223,6 +224,8 @@ void ApplicationSettingsWidget::loadSettings()
     m_generalUi->appThemeSelection->addItem(tr("Classic (Platform-native)"), "classic");
     m_generalUi->appThemeSelection->setCurrentIndex(
         m_generalUi->appThemeSelection->findData(config()->get(Config::GUI_ApplicationTheme).toString()));
+
+    m_generalUi->appDensitySelection->setCurrentIndex(config()->get(Config::GUI_ApplicationDensity).toInt());
 
     m_generalUi->toolButtonStyleComboBox->clear();
     m_generalUi->toolButtonStyleComboBox->addItem(tr("Icon only"), Qt::ToolButtonIconOnly);
@@ -345,6 +348,7 @@ void ApplicationSettingsWidget::saveSettings()
 
     QString theme = m_generalUi->appThemeSelection->currentData().toString();
     config()->set(Config::GUI_ApplicationTheme, theme);
+    config()->set(Config::GUI_ApplicationDensity, m_generalUi->appDensitySelection->currentIndex());
 
     config()->set(Config::GUI_ToolButtonStyle, m_generalUi->toolButtonStyleComboBox->currentData().toString());
 
